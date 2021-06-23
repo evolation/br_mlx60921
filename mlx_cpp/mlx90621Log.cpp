@@ -56,6 +56,7 @@ int main() {
 
       }
     }
+    return 0;
     // output text file
     //sprintf(fileName,"MLXImage_%d.txt",k);
     //mlx.exportText(calcData,fileName);
