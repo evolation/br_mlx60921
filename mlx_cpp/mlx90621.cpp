@@ -43,16 +43,16 @@ uint8_t MLX90621::init(void) {
   // wait 5ms
   usleep(5000);
   // read EEPROM table
-  printf("Reading EEPROM...\n");
+//   printf("Reading EEPROM...\n");
   readEEPROM(_EEPROM_Data);
   // only use configParam from EEPROM if no user supplied value.
   if (_configParam == 0){
     _configParam = (_EEPROM_Data[246]<<8) | _EEPROM_Data[245];
   }
   // write oscillator trim value into 0x93
-  printf("Writing Oscillator trim value...\n");
+//   printf("Writing Oscillator trim value...\n");
   writeData(0x04,_osc_trim,0xAA);
-  printf("Done.\n");
+//   printf("Done.\n");
   setConfig(_configParam);
   // set Brown Out flag to 1 (0x92B10)
 
@@ -64,7 +64,7 @@ int MLX90621::initI2C(void){
   if(_I2C < 0){
     _I2C = open(_i2cFilename, O_RDWR);
     if (_I2C<0){
-      printf("Failed to initialize I2C Bus\n");
+    //   printf("Failed to initialize I2C Bus\n");
       return 0;
     }
   }
@@ -84,9 +84,9 @@ uint8_t MLX90621::setConfig(uint16_t configParam){
   // initialize I2C
   initI2C();
   // write configuration parameter to 0x92
-  printf("Writing Configuration Parameter...\n");
+//   printf("Writing Configuration Parameter...\n");
   writeData(0x03,_configParam,0x55);
-  printf("Done.\n");
+//   printf("Done.\n");
   // store calibration constants
   for(i=0;i<64;i++){
     _dA[i] = _EEPROM_Data[i];
@@ -224,7 +224,7 @@ void MLX90621::exportText(double dataBuf[64], char *fileName){
   int outFile = open(fileName,O_WRONLY|O_CREAT,S_IRWXO);
   // check if file is actually open
   if(outFile<0)
-      printf("can't open output file");
+    //   printf("can't open output file");
   // write frame data to file
   for(j=0;j<16;j++){
       for(i=0;i<4;i++){
@@ -237,7 +237,7 @@ void MLX90621::exportText(double dataBuf[64], char *fileName){
   ret = close(outFile);
   // check if file actually closed
   if (ret == -1)
-      printf("failed to close output file");
+    //   printf("failed to close output file");
   return;
 }
 
@@ -257,11 +257,11 @@ void MLX90621::exportPng(double dataBuf[64], char *fileName){
   {
     for (int x = 0; x < MLXWIDTH; ++x)
     {
-        printf("%d ",buf[y*MLXWIDTH+x]);
+        // printf("%d ",buf[y*MLXWIDTH+x]);
     // outImage[y][x] = png::gray_pixel_16(buf[y*MLXWIDTH+x]);
     // non-checking equivalent of image.set_pixel(x, y, ...);
     }
-    printf("\n\n");
+    // printf("\n\n");
   }
   // output PNG
 //   outImage.write(fileName);
@@ -304,7 +304,7 @@ uint16_t MLX90621::readTamb(){
   packets.nmsgs = 2;
   if(ioctl(_I2C, I2C_RDWR, &packets) < 0){
     // unable to send data
-    printf("Unable to send data\n");
+    // printf("Unable to send data\n");
     return 0;
   }
 
@@ -335,12 +335,12 @@ void MLX90621::readEEPROM(uint8_t dataBuf[EEPROM_SIZE]) {
   dataBuf[0] = 0x00;
   if (write(_I2C, dataBuf, 1) != 1){
     // write failed
-    printf("Write Failed\n");
+    // printf("Write Failed\n");
   }
   //printf("Reading Data\n");
   if (read(_I2C, dataBuf, EEPROM_SIZE) != EEPROM_SIZE){
     // read failed
-    printf("Read Failed\n");
+    // printf("Read Failed\n");
   }
   // output table for debugging
   /*
@@ -391,7 +391,7 @@ void MLX90621::readFrame(int16_t dataBuf[64]){
   packets.nmsgs = 2;
   if(ioctl(_I2C, I2C_RDWR, &packets) < 0){
     // unable to send data
-    printf("Unable to send data\n");
+    // printf("Unable to send data\n");
     return;
   }
 
@@ -412,7 +412,7 @@ void MLX90621::writeCmd(uint8_t cmd, uint8_t offset, uint8_t ad_step, uint8_t nR
   // use MLX address
   if (ioctl(_I2C, I2C_SLAVE, MLX_ADDR) < 0){
     // could not set device as slave
-    printf("Could not find device\n");
+    // printf("Could not find device\n");
   }
   // write command
   uint8_t buf[4];
@@ -422,7 +422,7 @@ void MLX90621::writeCmd(uint8_t cmd, uint8_t offset, uint8_t ad_step, uint8_t nR
   buf[3] = nReads;
   if(write(_I2C, buf, 4) != 4){
     // write failed
-    printf("Write Failed\n");
+    // printf("Write Failed\n");
   }
 }
 // write data to MLX sensor
@@ -432,7 +432,7 @@ void MLX90621::writeData(uint8_t cmd, uint16_t data, uint8_t check) {
   // use MLX address
   if (ioctl(_I2C, I2C_SLAVE, MLX_ADDR) < 0){
     // could not set device as slave
-    printf("Could not find device\n");
+    // printf("Could not find device\n");
   }
   // write command
   uint8_t buf[5];
@@ -443,7 +443,7 @@ void MLX90621::writeData(uint8_t cmd, uint16_t data, uint8_t check) {
   buf[4] = data>>8;
   if(write(_I2C, buf, 5) != 5){
     // write failed
-    printf("Write Failed\n");
+    // printf("Write Failed\n");
   }
 }
 

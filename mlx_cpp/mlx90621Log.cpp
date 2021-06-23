@@ -4,12 +4,12 @@
 #include <time.h>
 
 void intHandler(int dummy){
-  printf("Exiting...\n");
+//   printf("Exiting...\n");
   exit(0);
 }
 
 int main() {
-  printf("deingena 22/06/21 ...\n");
+//   printf("deingena 22/06/21 ...\n");
 //   return 0;
   signal(SIGINT,intHandler);
   int i,j,k;
@@ -30,8 +30,8 @@ int main() {
     double T_amb = mlx.calcTa(T_amb_r);
     // get full frame
     mlx.readFrame(dataBuf);
-    printf("\n");
-    printf("\n");
+    // printf("\n");
+    // printf("\n");
 
     // for(int var = 0;var<64;var++)
     // {
@@ -46,11 +46,15 @@ int main() {
     }
     // print image number
     // printf("image\n");
+    printf("{\"pixels\":[");
     for(i = 0;i<16;i++){
       for(j=0;j<4;j++){
-        printf("%0.0f,",calcData[4*i+j]);
+        if(4*i+j<63)
+            printf("%0.0f,",calcData[4*i+j]);
+        else
+            printf("%0.0f]}\n",calcData[4*i+j]);
+
       }
-      printf("\n");
     }
     // output text file
     //sprintf(fileName,"MLXImage_%d.txt",k);
