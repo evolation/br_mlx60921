@@ -1,0 +1,18 @@
+{
+  "alias": "heatmap",
+  "name": "heatmap",
+  "descriptor": {
+    "type": "latest",
+    "sizeX": 7.5,
+    "sizeY": 3,
+    "resources": [],
+    "templateHtml": "",
+    "templateCss": "#container {\n    overflow: auto;\n}\n\n.tbDatasource-container {\n    margin: 5px;\n    padding: 8px;\n}\n\n.tbDatasource-title {\n    font-size: 1.200rem;\n    font-weight: 500;\n    padding-bottom: 10px;\n}\n\n.tbDatasource-table {\n    width: 100%;\n    box-shadow: 0 0 10px #ccc;\n    border-collapse: collapse;\n    white-space: nowrap;\n    font-size: 1.000rem;\n    color: #757575;\n}\n\n.tbDatasource-table td {\n    position: relative;\n    border-top: 1px solid rgba(0, 0, 0, 0.12);\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n    padding: 0px 18px;\n    box-sizing: border-box;\n}",
+    "controllerScript": "self.onInit = function() {\n\n    self.onResize();\n}\n\nself.onDataUpdated = function() {\n    var settings = self.ctx.settings;\n\n    if (self.ctx.defaultSubscription.data.length > 0) {\n\n        if (self.ctx.defaultSubscription.data[0].data\n            .length > 0) {\n\n            let temp_code = self.ctx.defaultSubscription\n                .data[0].data.toString();\n            let timestamp = temp_code.substring(0,\n                temp_code.indexOf(\",\"));\n            let json_string = temp_code.substring(\n                temp_code.indexOf(\",\") + 1);\n            console.log(\"Timestamp : \" + timestamp);\n            console.log(\"Json String : \" + json_string);\n            var j_o = JSON.parse(json_string);\n            console.log(j_o.array[0]);\n            j_o.array.forEach(function(e, i) {\n                console.log(\"[\" + i + \"] : \" +\n                    e);\n            });\n\n        }\n    }\n\n    function isNumber(n) {\n        return !isNaN(parseFloat(n)) && isFinite(n);\n    }\n}\n\nself.onResize = function() {}\n\nself.onDestroy = function() {}",
+    "settingsSchema": "{}",
+    "dataKeySettingsSchema": "{}\n",
+    "defaultConfig": "{\"datasources\":[{\"type\":\"function\",\"name\":\"function\",\"dataKeys\":[{\"name\":\"f(x)\",\"type\":\"function\",\"label\":\"Random\",\"color\":\"#2196f3\",\"settings\":{},\"_hash\":0.15479322438769105,\"funcBody\":\"var value = prevValue + Math.random() * 100 - 50;\\nvar multiplier = Math.pow(10, 2 || 0);\\nvar value = Math.round(value * multiplier) / multiplier;\\nif (value < -1000) {\\n\\tvalue = -1000;\\n} else if (value > 1000) {\\n\\tvalue = 1000;\\n}\\nreturn value;\"}]}],\"timewindow\":{\"realtime\":{\"timewindowMs\":60000}},\"showTitle\":true,\"backgroundColor\":\"#fff\",\"color\":\"rgba(0, 0, 0, 0.87)\",\"padding\":\"8px\",\"settings\":{},\"title\":\"heatmap\"}"
+  },
+  "image": null,
+  "description": null
+}

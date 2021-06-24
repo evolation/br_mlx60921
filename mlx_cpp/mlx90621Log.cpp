@@ -46,13 +46,13 @@ int main() {
     }
     // print image number
     // printf("image\n");
-    printf("{\"pixels\":\"");
+    printf("{\"pixels\":{\"array\":[");
     for(i = 0;i<16;i++){
       for(j=0;j<4;j++){
         if(4*i+j<63)
             printf("%0.0f,",calcData[4*i+j]);
         else
-            printf("%0.0f\"}",calcData[4*i+j]);
+            printf("%0.0f]},\"ambient\":%0.1f}",calcData[4*i+j],T_amb);
 
       }
     }
